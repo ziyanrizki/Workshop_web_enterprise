@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreAnggotaRequest;
 use Illuminate\Http\Request;
 use App\Models\Anggota;
 
@@ -26,15 +28,10 @@ class AnggotaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAnggotaRequest $request)
     {
-        Anggota::create($request->only([
-            'nama',
-            'alamat',
-            'no_telp',
-            'tgl_lhr'
-        ]));
-        return redirect()->route('anggota.index');
+        Anggota::create($request->validated());
+        return redirect()->route('user.anggota.index');
     }
 
     /**
@@ -65,7 +62,7 @@ class AnggotaController extends Controller
             'no_telp',
             'tgl_lhr'
         ]));
-        return redirect()->route('anggota.index');
+        return redirect()->route('user.anggota.index');
     }
 
     /**
@@ -75,6 +72,6 @@ class AnggotaController extends Controller
     {
         $anggota = Anggota::findOrFail($id);
         $anggota->delete();
-        return redirect()->route('anggota.index');
+        return redirect()->route('user.anggota.index');
     }
 }

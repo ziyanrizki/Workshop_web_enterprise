@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Http\Requests\StoreBukuRequest;
 
 class BukuController extends Controller
 {
@@ -21,17 +22,11 @@ class BukuController extends Controller
         return view('buku.create');
     }
 
-   public function store(Request $request){
-    Buku::create($request->only([
-        'kode_buku',
-        'judul',
-        'penulis',
-        'penerbit',
-        'tahun_terbit',
-        'stok'
-    ]));
-    return redirect()->route('buku.index');
-}
+    public function store(StoreBukuRequest $request)
+    {
+        Buku::create($request->validated());
+        return redirect()->route('admin.buku.index');
+    }
 
     /**
      * Display the specified resource.
@@ -60,7 +55,7 @@ class BukuController extends Controller
         'stok'
     ]));
 
-    return redirect()->route('buku.index');
+    return redirect()->route('admin.buku.index');
 }
 
     /**
@@ -69,6 +64,6 @@ class BukuController extends Controller
     public function destroy(Buku $buku)
     {
         $buku->delete();
-        return redirect()->route('buku.index');
+        return redirect()->route('admin.buku.index');
     }
 }
